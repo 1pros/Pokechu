@@ -1,0 +1,16 @@
+# Defined the pokemon movement
+def piplup(Size_Block, Pup_Move):
+
+    if direction == "right":
+        head = pygame.transform.rotate(Images, 270)
+    if direction == "left":
+        head = pygame.transform.rotate(Images, 90)
+    if direction == "up":
+        head = Images
+    if direction == "down":
+        head = pygame.transform.rotate(Images, 180)
+
+
+    
+    display.blit(head, (Pup_Move[-1][0], Pup_Move[-1][1]))
+   
