@@ -1,3 +1,11 @@
+#Open needed modules for the game
+
+import pygame
+import time
+import random
+
+pygame.init()
+
 # Added several colors for texts purposes
 purple2 =(89,0,179)
 blue2 = (119,206,227)
