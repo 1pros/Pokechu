@@ -1,0 +1,24 @@
+# Added several colors for texts purposes
+purple2 =(89,0,179)
+blue2 = (119,206,227)
+pink = (255, 174, 201)
+orange = (241, 196, 15)
+purple = (235, 222, 240)
+white = (255,255,255)
+black = (0,0,0)
+red = (255,0,0)
+green = (26, 188, 156)
+blue = (0, 162, 232)
+grey = (121, 125, 127)
+
+# Defined how big should the Screen be
+Screen_Width = 1000
+Screen_Height = 800
+
+# Added the clock 
+Clock = pygame.time.Clock()
+# Added the size of our pokemon(one chasing/eating and one being chased/eaten)
+skitty_size = 30
+Size_Block = 20
+# Added Frame for the speed of the pokemon
+FPS = 10
