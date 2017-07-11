@@ -1,0 +1,71 @@
+def Game_Loop():
+    global direction
+    direction = 'right'
+    
+    game = False
+    End_Game = False
+
+    So_x = Screen_Width / 2
+    So_y = Screen_Height / 2
+    So_x_change = 10
+    So_y_change = 0
+
+    Pup_Move = []
+    puplength = 1
+
+    skitty_one,skitty_two = random_skitty()
+    
+    while not game:
+
+        if End_Game == True:
+            Screen_Description("Awwww...Good Luck Next Time!", pink,
+                           y_displace = -50,
+                           size = "med")
+            Screen_Description("Press C to play again or Q to quit",
+                           pink,
+                           50,
+                           size = "small")
+            pygame.display.update()
+
+
+
+        
+        while End_Game == True:
+           
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    game = True
+                    End_Game = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game = True
+                        End_Game = False
+                    if event.key == pygame.K_c:
+                        Game_Loop()
+
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game == True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    direction = "left"
+                    So_x_change = -Size_Block
+                    So_y_change = 0
+                elif event.key == pygame.K_RIGHT:
+                    direction = "right"
+                    So_x_change = Size_Block
+                    So_y_change = 0
+                elif event.key == pygame.K_UP:
+                    direction = "up"
+                    So_y_change = -Size_Block
+                    So_x_change = 0
+                elif event.key == pygame.K_DOWN:
+                    direction = "down"
+                    So_y_change = Size_Block
+                    So_x_change = 0
+
+                elif event.key == pygame.K_p:
+                    Game_Pause()
