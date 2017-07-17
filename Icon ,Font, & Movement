@@ -1,0 +1,29 @@
+#import icons to our game
+
+display = pygame.display.set_mode((Screen_Width,Screen_Height))
+pygame.display.set_caption('Pokechu') 
+
+icon = pygame.image.load('master.png') 
+pygame.display.set_icon(icon) 
+
+
+Images = pygame.image.load('pup.png') 
+skittyImages = pygame.image.load('skitty.gif') 
+pupleg = pygame.image.load('leg.png') 
+
+
+#Given which direction is should start moving
+direction = "right"
+
+#Added font for our screen messages
+
+Font_Small = pygame.font.SysFont("Times New Roman", 25)
+
+Font_Medium = pygame.font.SysFont("Times New Roman", 50) 
+
+Font_Large = pygame.font.SysFont("Times New Roman", 130)
+
+
+#Added code to finish the poemon movement
+for AnB in Pup_Move[:-1]:
+	pygame.draw.rect(display, blue, [AnB[0],AnB[1],Size_Block,Size_Block])
