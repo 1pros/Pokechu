@@ -1,0 +1,34 @@
+#Given a pause function
+def Game_Pause():
+    Paused = True
+    Screen_Description("Now I Wait!!!", 
+                   pink,
+                   -100,
+                   size="large")
+    Screen_Description("Press C to continue or  Q to quit.",
+                   pink,
+                   25)
+    pygame.display.update()
+
+    while Paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    Paused = False
+                elif event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+					
+            Clock.tick(5)
+			
+#Give the pokemon skitty random position to be spawn			
+def random_skitty():
+    skitty_one = round(random.randrange(0,Screen_Width-skitty_size))
+    skitty_two = round(random.randrange(0,Screen_Height-skitty_size))
+
+
+    return skitty_one,skitty_two
