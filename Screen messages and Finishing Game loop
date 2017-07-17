@@ -1,0 +1,72 @@
+#Added screen messages font and color
+def Screen_Description(msg,color,y_displace=0, size = "small"):
+    textSurf, textRect = Text_Things(msg,color, size)
+    textRect.center = (Screen_Width / 2), (Screen_Height / 2)+y_displace
+    display.blit(textSurf, textRect)
+	
+#Screen functionality  	
+		if So_x >= Screen_Width or So_x < 0 or So_y >= Screen_Height or So_y < 0:
+            End_Game = True
+
+
+
+        So_x += So_x_change
+        So_y += So_y_change
+
+        
+
+        
+        display.fill(white)
+        
+        
+        
+        
+        
+        display.blit(skittyImages, (skitty_one, skitty_two))
+
+       
+        puphead = []
+        puphead.append(So_x)
+        puphead.append(So_y)
+        Pup_Move.append(puphead)
+
+        if len(Pup_Move) > puplength:
+            del Pup_Move[0]
+
+
+        for eachsegment in Pup_Move[:-1]:
+            if eachsegment == puphead:
+                End_Game = True
+        
+
+            
+        piplup(Size_Block,Pup_Move)
+
+        
+
+        pygame.display.update()
+
+        if So_x > skitty_one and So_x < skitty_one + skitty_size or So_x + Size_Block > skitty_one and So_x + Size_Block < skitty_one + skitty_size:
+            
+            if So_y > skitty_two and So_y < skitty_two + skitty_size:
+                
+                skitty_one,skitty_two = random_skitty()
+                puplength += 1
+                
+            elif So_y + Size_Block > skitty_two and So_y + Size_Block < skitty_two + skitty_size:
+                
+                skitty_one,skitty_two = random_skitty()
+                puplength += 2
+				
+			
+
+
+
+
+        
+        Clock.tick(FPS)
+
+    pygame.quit()
+    quit()
+Introduction()
+Game_Loop()
