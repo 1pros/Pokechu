@@ -1,0 +1,49 @@
+#Set keys and screen messages	
+def Introduction():
+    intro = True
+    while intro:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    intro = False
+
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+        
+		
+        Screen_Description("Pokéchu",
+                       blue2,
+                       -200,
+                       "large")
+        Screen_Description("The objective of the game is to catch Skitty", 		
+                       red,
+                       -30)
+        Screen_Description("The more skittys you catch, the longer your body gets",
+                       red,
+                       10)
+        Screen_Description("If you run into yourself or the edges, game is over.",
+                       red,
+                       50)
+        Screen_Description("Press C to play, P to pause or Q to exit.",
+                       white,
+                       180)
+
+        pygame.display.update()
+        Clock.tick(15)
+		
+#Added text stuff (add colors and fonts size)		
+def Text_Things(text,color,size):
+    if size == "small":
+        textSurface = Font_Small.render(text, True, color)
+    elif size == "med":
+        textSurface = Font_Medium.render(text, True, color)
+    elif size == "large":
+        textSurface = Font_Large.render(text, True, color)
+    return textSurface, textSurface.get_rect()
