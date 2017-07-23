@@ -1,0 +1,5 @@
+#Add a score functionality			
+def score(score):
+    text = Font_Small.render("Score: "+str(score), True, blue)
+    display.blit(text, [0,0])
+            
