@@ -1,0 +1,2 @@
+bg1 = pygame.image.load('luca.jpg')
+bg = pygame.image.load('ball.jpg')
