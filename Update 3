@@ -1,0 +1,339 @@
+#open needed modules for the game
+
+import pygame
+import time
+import random
+
+
+pygame.init()
+
+# Added several colors for texts purposes
+purple2 =(89,0,179)
+blue2 = (119,206,227)
+pink = (255, 174, 201)
+orange = (241, 196, 15)
+purple = (235, 222, 240)   
+white = (255,255,255)
+black = (0,0,0)
+red = (255,0,0)
+green = (26, 188, 156)
+blue = (0, 162, 232)
+grey = (121, 125, 127)
+
+# Defined how big should the Screen be
+Screen_Width = 1000
+Screen_Height = 800
+
+#import icon & images to our game
+bg1 = pygame.image.load('luca.jpg')
+bg = pygame.image.load('ball.jpg') 
+display = pygame.display.set_mode((Screen_Width,Screen_Height))
+pygame.display.set_caption('Pokechu') 
+
+icon = pygame.image.load('master.png') 
+pygame.display.set_icon(icon) 
+
+
+Images = pygame.image.load('pup.png') 
+skittyImages = pygame.image.load('skitty.gif') 
+pupleg = pygame.image.load('leg.png') 
+
+
+
+# Added the clock
+Clock = pygame.time.Clock()
+# Added the size of our pokemon(one chasing/eating and one being chased/eaten)
+skitty_size = 30
+Size_Block = 20
+# Added Frame for the speed of the pokemon
+FPS = 10
+
+
+#Given which direction is should start moving
+direction = "right"
+
+#Added font for our screen messages
+
+Font_Small = pygame.font.SysFont("Times New Roman", 25)
+
+Font_Medium = pygame.font.SysFont("Times New Roman", 50) 
+
+Font_Large = pygame.font.SysFont("Times New Roman", 130)
+
+#Given a pause function
+def Game_Pause():
+    Paused = True
+    Screen_Description("Now I Wait!!!", 
+                   pink,
+                   -100,
+                   size="large")
+    Screen_Description("Press C to continue or  Q to quit.",
+                   pink,
+                   25)
+    pygame.display.update()
+
+    while Paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    Paused = False
+                elif event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+					
+            Clock.tick(5)
+			
+#Add a score functionality			
+def score(score):
+    text = Font_Small.render("Score: "+str(score), True, blue)
+    display.blit(text, [0,0])
+            
+#Give the pokemon skitty random position to be spawn			
+def random_skitty():
+    skitty_one = round(random.randrange(0,Screen_Width-skitty_size))
+    skitty_two = round(random.randrange(0,Screen_Height-skitty_size))
+
+
+    return skitty_one,skitty_two
+	
+	
+	
+	
+#Set keys and screen messages	
+def Introduction():
+    intro = True
+    while intro:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    intro = False
+
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+        
+		
+        Screen_Description("Pokéchu",
+                       blue2,
+                       -200,
+                       "large")
+        Screen_Description("The objective of the game is to catch Skitty", 		
+                       red,
+                       -30)
+        Screen_Description("The more skittys you catch, the longer your body gets",
+                       red,
+                       10)
+        Screen_Description("If you run into yourself or the edges, game is over.",
+                       red,
+                       50)
+        Screen_Description("Press C to play, P to pause or Q to exit.",
+                       white,
+                       180)
+
+        pygame.display.update()
+        Clock.tick(15)
+# Defined the pokemon movement        
+def piplup(Size_Block, Pup_Move):
+
+    if direction == "right":
+        head = pygame.transform.rotate(Images, 270)
+    if direction == "left":
+        head = pygame.transform.rotate(Images, 90)
+    if direction == "up":
+        head = Images
+    if direction == "down":
+        head = pygame.transform.rotate(Images, 180)
+
+
+    
+    display.blit(head, (Pup_Move[-1][0], Pup_Move[-1][1]))
+    
+    for AnB in Pup_Move[:-1]:
+        pygame.draw.rect(display, blue, [AnB[0],AnB[1],Size_Block,Size_Block])
+		
+#Added legs to the pokemon		
+	  if direction == "right":
+        leg = pygame.transform.rotate(pupleg, 270)
+    if direction == "left":
+        leg = pygame.transform.rotate(pupleg, 90)
+    if direction == "up":
+        leg = pupleg
+    if direction == "down":
+        leg = pygame.transform.rotate(pupleg, 180)
+
+
+    for AnB in Pup_Move[0]:
+        display.blit(leg,(Pup_Move[0][0],Pup_Move[0][1]))	
+		
+#Added text stuff (add colors and fonts size)		
+def Text_Things(text,color,size):
+    if size == "small":
+        textSurface = Font_Small.render(text, True, color)
+    elif size == "med":
+        textSurface = Font_Medium.render(text, True, color)
+    elif size == "large":
+        textSurface = Font_Large.render(text, True, color)
+    return textSurface, textSurface.get_rect()
+
+
+#Added screen messages font and color
+def Screen_Description(msg,color,y_displace=0, size = "small"):
+    textSurf, textRect = Text_Things(msg,color, size)
+    textRect.center = (Screen_Width / 2), (Screen_Height / 2)+y_displace
+    display.blit(textSurf, textRect)
+	
+#Define Game loop so everything runs and works		
+def Game_Loop():
+    global direction
+    direction = 'right'
+    
+    game = False
+    End_Game = False
+
+    So_x = Screen_Width / 2
+    So_y = Screen_Height / 2
+    So_x_change = 10
+    So_y_change = 0
+
+    Pup_Move = []
+    puplength = 1
+
+    skitty_one,skitty_two = random_skitty()
+#End game message    
+    while not game:
+
+        if End_Game == True:
+            Screen_Description("Awwww...Good Luck Next Time!", pink,
+                           y_displace = -50,
+                           size = "med")
+            Screen_Description("Press C to play again or Q to quit",
+                           pink,
+                           50,
+                           size = "small")
+            pygame.display.update()
+
+
+
+        
+        while End_Game == True:
+           
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    game = True
+                    End_Game = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game = True
+                        End_Game = False
+                    if event.key == pygame.K_c:
+                        Game_Loop()
+
+#Keys functionality 
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game == True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    direction = "left"
+                    So_x_change = -Size_Block
+                    So_y_change = 0
+                elif event.key == pygame.K_RIGHT:
+                    direction = "right"
+                    So_x_change = Size_Block
+                    So_y_change = 0
+                elif event.key == pygame.K_UP:
+                    direction = "up"
+                    So_y_change = -Size_Block
+                    So_x_change = 0
+                elif event.key == pygame.K_DOWN:
+                    direction = "down"
+                    So_y_change = Size_Block
+                    So_x_change = 0
+
+                elif event.key == pygame.K_p:
+                    Game_Pause()
+
+
+
+
+#Screen functionality                     
+
+        if So_x >= Screen_Width or So_x < 0 or So_y >= Screen_Height or So_y < 0:
+            End_Game = True
+
+
+
+        So_x += So_x_change
+        So_y += So_y_change
+
+        
+
+        
+        display.fill(white)
+        
+        
+        
+        
+        
+        display.blit(skittyImages, (skitty_one, skitty_two))
+
+       
+        puphead = []
+        puphead.append(So_x)
+        puphead.append(So_y)
+        Pup_Move.append(puphead)
+
+        if len(Pup_Move) > puplength:
+            del Pup_Move[0]
+
+
+        for eachsegment in Pup_Move[:-1]:
+            if eachsegment == puphead:
+                End_Game = True
+        
+
+            
+        piplup(Size_Block,Pup_Move)
+		
+		    score(puplength-1)
+
+        
+
+        pygame.display.update()
+
+        if So_x > skitty_one and So_x < skitty_one + skitty_size or So_x + Size_Block > skitty_one and So_x + Size_Block < skitty_one + skitty_size:
+            
+            if So_y > skitty_two and So_y < skitty_two + skitty_size:
+                
+                skitty_one,skitty_two = random_skitty()
+                puplength += 1
+                
+            elif So_y + Size_Block > skitty_two and So_y + Size_Block < skitty_two + skitty_size:
+                
+                skitty_one,skitty_two = random_skitty()
+                puplength += 2
+				
+			
+
+
+
+
+        
+        Clock.tick(FPS)
+
+    pygame.quit()
+    quit()
+Introduction()
+Game_Loop()
