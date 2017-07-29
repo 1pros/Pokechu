@@ -1,0 +1,1 @@
+display.blit(bg,(0,0))
